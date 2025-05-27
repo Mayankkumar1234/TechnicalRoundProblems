@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+     <title>Task1</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" >
+  
+      function App(){
+        return (
+          <div className="w-full h-full  " >
+              <Table />
+            </div>
+        )
+      }
+
+      const Data = ["Onboarding Call","Google Seach Console Access","Google Analytics Access","Websites Access","Technical Audit","Anchor Text and Semantic Analysis","Competitor Analysis","Anchor Text / URL Mapping","Google Data Studio Report + Local Reporting Suite","Site Level Optimization","On Page Optimization","Content Creation","Content Publishing","Premium Press Release","Authority Niche Placements","Review Management","Index Links","Video Recap"]
+
+      function Table(){
+        return (
+          <div className="w-full  overflow-hidden">
+             <table className="w-full h-screen">
+              <thead className="bg-zinc-100 border-2">
+                <tr> <p className="text-center" >Month 1</p></tr>
+                </thead>
+                 <TableBody Data={Data} />
+                </table>
+            </div>
+        )
+      }
+
+        function TableBody({Data}){
+           
+          return (
+              <tbody className="border-2" >
+                { Data && Data.map((ele)=>(
+                   <tr   className="flex ">
+                     <td  className=" text-center border-1 border-zinc-200 bg-zinc-100   w-[30%]" ><p className="  " >{ele}</p></td>
+                   <td  className="border-1  border-zinc-200  w-[8%]" ><input className="py-1 border-none  w-[8%]" type="text" /></td>
+                   <td className="border-1 border-zinc-200 "><input className=" py-1 border-none" type="text" /></td>
+                  <td className="border-1 border-zinc-200 "> <input className=" py-1 border-none" type="text" /></td>
+                   
+                  <td className="border-1 border-zinc-200 "> <input className="py-1 border-none" type="text" /></td>
+ <td className="border-1 border-zinc-200 "> <input className="py-1 " type="text" /></td>
+  <td className="border-1 border-zinc-200 w-[9%]"> <input className="py-1 no-border border-hidden" type="text" /></td>
+                    </tr>
+                ))}
+                  </tbody>
+          )
+        }
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
