@@ -51,7 +51,7 @@
             <table className="w-full h-screen">
               <thead className="bg-zinc-100 ">
                 <tr>
-                 <td> <p className="pl-32 ">Month 1</p></td>
+                  <th className="pl-32 text-left">Month 1</th>
                 </tr>
               </thead>
               <TableBody Data={Data} />
@@ -60,21 +60,21 @@
         );
       }
 
-      function TableBody({ Data }) { 
+      function TableBody({ Data }) {
+        const [initData, setData] = React.useState(null);
 
-        const [initData , setData] = React.useState(null)
-
-        const inputHandler = (element,column,  value) => {
-          setData((prev)=>({
-            ...prev,[element]:{
-              
-              [column]:value
-            }
-          })) 
+        const inputHandler = (element, column, value) => {
+          setData((prev) => ({
+            ...prev,
+            [element]: {
+             ...(prev?.[element] || {}),
+              [column]: value,
+            },
+          }));
         };
-         React.useEffect(()=>{
-      console.log(initData)
-         },[initData])    
+        React.useEffect(() => {
+          console.log(initData);
+        }, [initData]);
 
         return (
           <tbody className="">
@@ -87,7 +87,7 @@
                   <td className="border-1  border-zinc-200  w-[8%]">
                     <input
                       className="py-1 border-none  outline-none"
-                      onBlur={(e) => inputHandler(ele,1, e.target.value)}
+                      onBlur={(e) => inputHandler(ele, 1, e.target.value)}
                       type="text"
                     />
                   </td>
@@ -95,14 +95,14 @@
                     <input
                       className=" py-1 border-none outline-none"
                       type="text"
-                      onBlur={(e) => inputHandler(ele,2, e.target.value)}
+                      onBlur={(e) => inputHandler(ele, 2, e.target.value)}
                     />
                   </td>
                   <td className="border-1 border-zinc-200 ">
                     <input
                       className=" py-1 border-none outline-none"
                       type="text"
-                      onBlur={(e) => inputHandler(ele,3, e.target.value)}
+                      onBlur={(e) => inputHandler(ele, 3, e.target.value)}
                     />
                   </td>
 
@@ -110,7 +110,7 @@
                     <input
                       className="py-1 border-none outline-none"
                       type="text"
-                      onBlur={(e) => inputHandler(ele,4, e.target.value)}
+                      onBlur={(e) => inputHandler(ele, 4, e.target.value)}
                     />
                   </td>
                   <td className="border-1 border-zinc-200 ">
@@ -120,7 +120,7 @@
                     <input
                       className="py-1 no-border border-hidden outline-none"
                       type="text"
-                      onBlur={(e) => inputHandler(ele,5, e.target.value)}
+                      onBlur={(e) => inputHandler(ele, 5, e.target.value)}
                     />
                   </td>
                 </tr>
