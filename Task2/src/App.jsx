@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react' 
+import { useEffect, useRef, useState } from 'react' 
 import Container from 'react-bootstrap/Container'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,11 +8,12 @@ import Form from "react-bootstrap/Form";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import axios from "axios"
+import { motion } from "framer-motion";
 
-import './App.css' 
 
 function App() { 
-
+  
+   const ref = useRef(null);
 
   const [userData, setuserData] = useState([]);
 
@@ -31,11 +32,11 @@ function App() {
   
 
   const setSearchTerm =(searchTerm)=>{
-const filteredUsers = searchTerm.length>0? userData.filter((user) =>
+   
+const filteredUsers = userData.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  ):userData;
+  );
   setuserData(filteredUsers)
-  console.log(filteredUsers)
   }
 
   useEffect(()=>{
@@ -43,10 +44,13 @@ const filteredUsers = searchTerm.length>0? userData.filter((user) =>
   },[])
 
   return (
-  <div className=" vw-100 py-4 bg-dark vh-100  ">
+  <div style={{width:"100vw", overflowX:"hidden"}} className=" w-screen  bg-dark vh-100   ">
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg d-flex navbar-light bg-light mb-4 justify-content-between px-4">
-        <a className="navbar-brand" href="#">MyApp</a>
+      <nav className="navbar navbar-expand-lg d-flex navbar-light bg-light mt-0 mb-4 justify-content-between px-4 py-3">
+        <a className="cursor-pointer navbar-brand" href='#' onClick={(e)=>{
+          e.preventDefault();
+          getData()
+        }}>MyApp</a>
         <form className="form-inline ml-auto">
           <input
             className="form-control"
@@ -60,19 +64,21 @@ const filteredUsers = searchTerm.length>0? userData.filter((user) =>
       </nav>
 
       {/* Main Content */}
-      <div className="row">
+      <div className="row px-3 pt-4 d-flex   gap-2 align-items-center justify-content-center" ref={ref}>
         { userData && userData.map((user) => (
-          <div className="col-md-4 mb-4" key={user.id}>
-            <div className="card">
-              <div className="card-body">
+          <motion.div 
+drag dragConstraints={ref} className=" col-12 col-sm-4 col-md-4 col-lg-3 mb-4   "   key={user.id}>
+            <div className="card rounded-5  ">
+              <div className=" card-body d-flex flex-column gap-2 align-items-center">
                 <h5 className="card-title">{user.name}</h5>
-                <p className="card-text">
+                <p className="card-text d-flex flex-column gap-1">
                   <strong>Email:</strong> {user.email}<br />
                   <strong>Phone:</strong> {user.phone}
                 </p>
               </div>
+              
             </div>
-          </div>
+          </motion.div>
         ))}
         {userData.length === 0 && (
           <div className="col-12 text-center">
