@@ -1,12 +1,4 @@
 import { useEffect, useRef, useState } from 'react' 
-import Container from 'react-bootstrap/Container'; 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form"; 
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Nav from "react-bootstrap/Nav";
 import axios from "axios"
 import { motion } from "framer-motion";
 
@@ -16,8 +8,12 @@ function App() {
    const ref = useRef(null);
 
   const [userData, setuserData] = useState([]);
+  const [currentPage , setCurrentPage] = useState(1);
+ const usersPerPage = 5;
 
   const getData =async ()=>{
+
+    //  Using try and catch block to fetch the data 
    try{
     const allData = await axios.get("https://jsonplaceholder.typicode.com/users");
      
@@ -28,16 +24,24 @@ function App() {
     alert(err.message);
    }
   }
+   
+   // This code is for the pagination on the existing data
 
-  
+  const indexOfLast = currentPage * usersPerPage;
+  const indexOfFirst = indexOfLast - usersPerPage;
+
+  // In this line data is slice based on the number of page
+  const currentUsers = userData.slice(indexOfFirst, indexOfLast);
 
   const setSearchTerm =(searchTerm)=>{
-   
+   // This code is for filter the user based on thier name
 const filteredUsers = userData.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   setuserData(filteredUsers)
   }
+ 
+  // useEffect for render the data  whenever the page loads
 
   useEffect(()=>{
    getData()
@@ -65,8 +69,9 @@ const filteredUsers = userData.filter((user) =>
 
       {/* Main Content */}
       <div className="row px-3 pt-4 d-flex   gap-2 align-items-center justify-content-center" ref={ref}>
-        { userData && userData.map((user) => (
+        { currentUsers && currentUsers.map((user) => (
           <motion.div 
+          // This is the addition drag feature
 drag dragConstraints={ref} className=" col-12 col-sm-4 col-md-4 col-lg-3 mb-4   "   key={user.id}>
             <div className="card rounded-5  ">
               <div className=" card-body d-flex flex-column gap-2 align-items-center">
@@ -79,13 +84,42 @@ drag dragConstraints={ref} className=" col-12 col-sm-4 col-md-4 col-lg-3 mb-4   
               
             </div>
           </motion.div>
+           
         ))}
+
+    {/* when there is no user it will print this */}
         {userData.length === 0 && (
           <div className="col-12 text-center">
-            <p>No users found.</p>
+            <h2 className='position-fixed top-5 start-5 text-white'>No users found.</h2>
           </div>
         )}
       </div>
+
+      {/*This is the pagination section */}
+      <div className="d-flex justify-content-end mt-4 position-fixed bottom-0 end-0 px-5">
+  <ul className="pagination gap-2">
+    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+      <button className="page-link" onClick={() => setCurrentPage(prev =>prev-1)}>
+        &lt;
+      </button>
+    </li>
+    
+    {[1, 2].map((ele) => (
+      <li key={ele} className={`page-item ${currentPage === ele ? 'active' : ''}`}>
+        <button className="page-link" onClick={() => setCurrentPage(ele)}>
+          {ele}
+        </button>
+      </li>
+    ))}
+
+    <li className={`page-item ${currentPage === 2 ? 'disabled' : ''}`}>
+      <button className="page-link" onClick={() => setCurrentPage(prev => prev + 1)}  >
+        &gt;
+      </button>
+    </li>
+  </ul>
+</div>
+
     </div>
   );
 }
